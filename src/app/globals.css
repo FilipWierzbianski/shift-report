@@ -1,26 +1,269 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Shift Report — Studio noir
+  Graphite monochrome after the Superadt voice screen, built on the BodyTrack token structure.
+  Type + effects: one face (Figtree), film grain, soft light rays, blurred tail on agent speech.
+  Colour roles:
+    --ai        silver     → anything the AI produced or is doing (agent, caught facts, suggestions)
+    --attention pale lime  → something needs the human (gaps, anomalies, flags)
+    --text-1    bone       → human actions (primary pills), headings, numbers
+*/
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--bt-font-body);
+  --font-heading: var(--bt-font-heading);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* BodyTrack tokens as Tailwind colours */
+  --color-bg: var(--bt-bg);
+  --color-surface: var(--bt-surface);
+  --color-surface-2: var(--bt-surface-2);
+  --color-inset: var(--bt-inset);
+  --color-sheet: var(--bt-sheet);
+  --color-text-1: var(--bt-text-1);
+  --color-body: var(--bt-body);
+  --color-text-2: var(--bt-text-2);
+  --color-text-3: var(--bt-text-3);
+  --color-line: var(--bt-line);
+  --color-line-dashed: var(--bt-line-dashed);
+  --color-bar-idle: var(--bt-bar-idle);
+  --color-ai: var(--bt-ai);
+  --color-ai-pressed: var(--bt-ai-pressed);
+  --color-ai-ink: var(--bt-ai-ink);
+  --color-attention: var(--bt-attention);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Editable design tokens: Studio noir (Filip's pick, 1 Nov; after the Superadt voice screen).
+   The in-app "Aa" panel overrides them on <html> and recomputes the derived ones. */
+:root {
+  --bt-bg: #101010;
+  --bt-surface: #1c1c1c;
+  --bt-surface-2: #262626;
+  --bt-inset: #151515;
+  --bt-sheet: #121212;
+  --bt-text-1: #f4f4f1;
+  --bt-body: #b4b4ae;
+  --bt-text-2: #85857f;
+  --bt-text-3: #5f5f5b;
+  --bt-line: #232323;
+  --bt-line-dashed: #3d3d3a;
+  --bt-bar-idle: #3b3b38;
+  --bt-ai: #dcdcd4;
+  --bt-ai-pressed: #bcbcb4;
+  --bt-ai-ink: #0f0f0f;
+  --bt-attention: #d5e085; /* Filip, 1 Nov */
+  --bt-font-body: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --bt-font-heading: var(--bt-font-body);
+  --bt-grain: 0.13;
+  --bt-rays: 1.6;
+}
+
+:root {
+  --background: var(--bt-bg);
+  --foreground: var(--bt-text-1);
+  --card: var(--bt-surface);
+  --card-foreground: var(--bt-text-1);
+  --popover: var(--bt-sheet);
+  --popover-foreground: var(--bt-text-1);
+  --primary: var(--bt-text-1);
+  --primary-foreground: var(--bt-ai-ink);
+  --secondary: var(--bt-surface-2);
+  --secondary-foreground: var(--bt-text-1);
+  --muted: var(--bt-inset);
+  --muted-foreground: var(--bt-text-2);
+  --accent: var(--bt-surface-2);
+  --accent-foreground: var(--bt-text-1);
+  --destructive: var(--bt-attention);
+  --border: rgba(245, 243, 236, 0.08);
+  --input: rgba(245, 243, 236, 0.12);
+  --ring: var(--bt-ai);
+  --radius: 1rem;
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3 {
+    font-family: var(--bt-font-heading);
+  }
+  button {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--bt-text-1);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Film grain over everything (Superadt reference). Pure decoration, never intercepts input. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: var(--bt-grain);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
+
+/* Soft diagonal light rays behind conversation screens. */
+.rays {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(245, 243, 236, 0.045) 38%, transparent 46%),
+    linear-gradient(110deg, transparent 52%, rgba(245, 243, 236, 0.035) 58%, transparent 66%),
+    linear-gradient(120deg, transparent 12%, rgba(200, 242, 78, 0.025) 20%, transparent 28%);
+  filter: blur(18px);
+  opacity: var(--bt-rays);
+}
+
+/* Agent speech: each word sharpens in; the newest words stay soft (Superadt "blurred tail"). */
+@keyframes word-in {
+  from { opacity: 0; filter: blur(8px); }
+  to { opacity: 1; filter: blur(0); }
+}
+.word-in {
+  animation: word-in 420ms ease both;
+}
+
+@keyframes screen-in {
+  from { opacity: 0; filter: blur(10px); }
+  to { opacity: 1; filter: blur(0); }
+}
+.screen-in {
+  animation: screen-in 600ms ease both;
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(60%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.sheet-in {
+  animation: sheet-in 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes gap-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+.gap-pulse {
+  animation: gap-pulse 2s ease-in-out infinite;
+}
+
+.glass {
+  background: rgba(245, 243, 236, 0.045);
+  border: 1px solid rgba(245, 243, 236, 0.09);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+}
+
+/* Studio noir surfaces, scoped to the phone and the hub ([data-look="noir"]). */
+[data-look="noir"] {
+  font-family: var(--bt-font-body);
+  background: radial-gradient(
+    120% 70% at 50% 28%,
+    color-mix(in oklab, var(--bt-bg), white 7%) 0%,
+    var(--bt-bg) 55%,
+    color-mix(in oklab, var(--bt-bg), black 30%) 100%
+  );
+}
+[data-look="noir"] .bg-surface {
+  background-color: rgb(255 255 255 / 0.035);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(14px);
+}
+[data-look="noir"] .bg-sheet { background-color: color-mix(in oklab, var(--bt-bg) 72%, transparent); backdrop-filter: blur(18px); }
+[data-look="noir"] h1 { font-weight: 500; letter-spacing: -0.02em; }
+[data-look="noir"] .num { font-weight: 500; }
+
+@media (min-width: 1024px) {
+  html.bt-panel-open body { padding-right: 360px; }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Web app (laptop): parts of a screen that only make sense on the phone, and the reverse. */
+[data-show-web] { display: none; }
+@media (min-width: 1024px) {
+  [data-web] [data-hide-web] { display: none !important; }
+  [data-web] [data-show-web] { display: flex; }
+}
+@media (min-width: 1024px) {
+  /* The web panel has its own light rays; a screen's own would show as a band behind the centred column. */
+  [data-web] [data-phone] .rays { display: none; }
+}
+@media (min-width: 1024px) {
+  /* The agent spans the whole conversation panel, not just the centred column (--pane-w set by the shell). */
+  [data-web] .agent-band {
+    width: var(--pane-w, 100%) !important;
+    max-width: none !important;
+    margin-left: calc((100% - var(--pane-w, 100%)) / 2) !important;
+    margin-right: 0 !important;
+    align-self: flex-start !important;
+  }
+}
+@media (min-width: 1024px) {
+  /* Let the agent band run past the centred column to the panel edges (clip only vertically). */
+  [data-web] [data-phone] .screen-in,
+  [data-web] [data-phone] .screen-in > .overflow-hidden { overflow-x: visible; overflow-y: clip; }
+}
+
+/* Report closed: the check draws itself, then one soft pulse of light. */
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.done-ring { stroke-dasharray: 151; stroke-dashoffset: 151; animation: draw 700ms ease-out 250ms forwards; }
+.done-tick { stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw 420ms ease-out 850ms forwards; }
+@keyframes done-pulse {
+  from { box-shadow: 0 0 0 0 rgba(244, 244, 241, 0.32), 0 0 60px rgba(244, 244, 241, 0.16); }
+  to { box-shadow: 0 0 0 30px rgba(244, 244, 241, 0), 0 0 60px rgba(244, 244, 241, 0.16); }
+}
+.done-badge { box-shadow: 0 0 60px rgba(244, 244, 241, 0.16); animation: done-pulse 1.4s ease-out 1.15s 1 both; }

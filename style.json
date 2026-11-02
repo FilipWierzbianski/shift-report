@@ -1,0 +1,17 @@
+{
+  "body": "Figtree",
+  "heading": "Figtree",
+  "colors": {
+    "bg": "#101010",
+    "surface": "#1c1c1c",
+    "surface-2": "#262626",
+    "inset": "#151515",
+    "text-1": "#f4f4f1",
+    "body": "#b4b4ae",
+    "text-2": "#85857f",
+    "ai": "#dcdcd4",
+    "attention": "#d5e085"
+  },
+  "grain": 0.2,
+  "rays": 1.6
+}

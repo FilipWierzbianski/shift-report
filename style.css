@@ -1,0 +1,22 @@
+:root {
+  --bt-bg: #101010;
+  --bt-surface: #1c1c1c;
+  --bt-surface-2: #262626;
+  --bt-inset: #151515;
+  --bt-text-1: #f4f4f1;
+  --bt-body: #b4b4ae;
+  --bt-text-2: #85857f;
+  --bt-ai: #dcdcd4;
+  --bt-attention: #d5e085;
+  --bt-sheet: color-mix(in oklab, #101010 55%, #1c1c1c);
+  --bt-text-3: color-mix(in oklab, #85857f 75%, #101010);
+  --bt-line: color-mix(in oklab, #1c1c1c 88%, #f4f4f1);
+  --bt-line-dashed: color-mix(in oklab, #1c1c1c 72%, #f4f4f1);
+  --bt-bar-idle: color-mix(in oklab, #262626 72%, #f4f4f1);
+  --bt-ai-pressed: color-mix(in oklab, #dcdcd4 82%, black);
+  --bt-ai-ink: #14140f;
+  --bt-font-body: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --bt-font-heading: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --bt-grain: 0.2;
+  --bt-rays: 1.6;
+}
